@@ -1,0 +1,63 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family: 'Open Sans', sans-serif;
+}
+input:focus {
+  outline: none;
+}
+.container {
+  width: 600px;
+  margin: 0 auto;
+  padding-top: 80px;
+}
+.container img {
+  max-width: 100%;
+}
+.editor {
+  width: 600px;
+  left: 50%;
+  margin-left: -300px;
+  position: fixed;
+  padding-top: 10px;
+  padding-bottom: 20px;
+  background-color: #fff;
+}
+.editor input[type="text"] {
+  width: 100%;
+  padding: 5px;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  font-size: 16px;
+  margin-top: 10px;
+}
+.option {
+  float: right;
+}
+.cont {
+  float: left;
+  font-size: 12px;
+  color: #ccc;
+  margin-left: 5px;
+}
+
+.mensagem {
+  width: 570px;
+}
+
+ul {
+  padding: 0;
+}
+
+.mensagens-enviadas {
+  overflow: auto;
+  margin-top: 80px;
+}
+
+li {
+  background-color: #edeff4;
+  margin-top: 1px;
+  padding: 4px;
+  word-wrap: break-word;
+  list-style-type: none;
+}
