@@ -12,7 +12,7 @@
         iosocket.on('connect', function () {
           $('#entradaChat').append($('<li>Conectado com sucesso</li>'));
           iosocket.on('message', function(message) {
-            $('#entradaChat').append($('<li></li>').text(message));
+            WriteMessage(message);
           });
           iosocket.on('disconnect', function() {
             $('#entradaChat').append('<li>Desconectado</li>');
@@ -22,25 +22,112 @@
         $('#saidaChat').keypress(function(event) {
           if(event.which == 13) {
             event.preventDefault();
-            iosocket.send($('#saidaChat').val());
-            $('#entradaChat').prepend($('<li></li>').text($('#saidaChat').val()));
-            $('#saidaChat').val('');
+            var message = $('#saidaChat').val();
+            if(message.length > 0){
+              iosocket.send(message);
+              WriteMessage(message);
+              $('#saidaChat').val('');
+            }
           }
         });
       });
+
+      var WriteMessage = function (message){
+        if(message.indexOf('.jpg') > -1 || message.indexOf('.png') > -1 || message.indexOf('.jpeg') > -1 || message.indexOf('.gif') > -1){
+          var srcimg = GetImage(message);
+          var img = '<img src="'+GetImage(message)+'"/>';
+          if(message.replace(srcimg, '').length > 0){
+            $('#entradaChat').append($('<li></li>').text(message.replace(srcimg, '')));  
+          }
+          $('#entradaChat').append($('<li></li>').html(img));
+        } else if(message.indexOf('www.youtube.com/watch?v=') > -1 || message.indexOf('youtu.be/') > -1){
+          var srcvideo = GetVideo(message);
+          var video = '<iframe width="560" height="315" src="https://www.youtube.com/embed/'+srcvideo+'" frameborder="0" allowfullscreen></iframe>';
+          $('#entradaChat').append($('<li></li>').text(message));  
+          $('#entradaChat').append($('<li></li>').html(video));
+        } else {
+          $('#entradaChat').append($('<li></li>').text(message));
+        }
+        if($('#autoscroll').get(0).checked){
+          window.scrollTo(0,document.body.scrollHeight);
+        }
+      }
+
+      var GetImage = function (message){
+        var recurs = function (p, e){
+          var img = "";
+          var imgNew = "";
+          for (var i = p; i >= 0; i--) {
+            if(message[i] == ' '){
+              i = -1;
+            } else {
+              img += message[i];
+            }
+          };
+          for (var i = img.length - 1; i >= 0; i--) {
+            imgNew += img[i];
+          };
+          imgNew += e;
+          return imgNew;
+        }
+        if (message.indexOf('.jpg') > -1) {
+          return recurs(message.indexOf('.jpg'), 'jpg');
+        } else if(message.indexOf('.jpeg') > -1){
+          return recurs(message.indexOf('.jpeg', 'jpeg'));
+        } else if(message.indexOf('.png') > -1){
+          return recurs(message.indexOf('.png'), 'png');
+        } else if(message.indexOf('.gif') > -1){
+          return recurs(message.indexOf('.gif'), 'gif');
+        }
+      }
+
+      var GetVideo = function (message){
+        var recurs = function (p, e){
+          var video = "";
+          var msgNew = message.replace('www.youtube.com/watch?v=', '').replace('youtu.be/', '');
+          for (var i = p; i < msgNew.length; i++) {
+            if(msgNew[i] == ' '){
+              i = msgNew.length;
+            } else {
+              video += msgNew[i];
+            }
+          };
+          console.log(video)
+          return video.trim();
+        }
+        if (message.indexOf('www.youtube.com/watch?v=') > -1) {
+          return recurs(message.indexOf('www.youtube.com/watch?v='));
+        } else if(message.indexOf('youtu.be/') > -1){
+          return recurs(message.indexOf('youtu.be/'));
+        }
+      }
   </script>
   <style type="text/css">
-    #container {
+    .container {
       width: 600px;
-      margin-right: auto;
-      margin-left: auto;
-      padding-left: 15px;
-      padding-right: 15px;
+      margin: 0 auto;
+      padding-top: 80px;
+    }
+    .editor {
+      width: 600px;
+      left: 50%;
+      margin-left: -300px;
+      position: fixed;
+      padding-top: 10px;
+      padding-bottom: 20px;
+      background-color: #fff;
+    }
+    .editor input[type="text"] {
+      width: 100%;
+      padding: 5px;
+      border: 1px solid #ccc;
+    }
+    .option {
+      float: right;
     }
 
     .mensagem {
       width: 570px;
-      margin-top: 20px;
     }
 
     ul {
@@ -48,8 +135,6 @@
     }
 
     .mensagens-enviadas {
-      max-height: 600px;
-      height: 600px;
       overflow: auto;
       margin-top: 10px;
     }
@@ -64,8 +149,11 @@
   </style>
 </head>
 <body>
-  <div id="container">
+  <div class="editor">
+    <div class="option"> <input type="checkbox" checked="checked" id="autoscroll" value="autoscroll"> AutoScroll</div>
     <input class="mensagem" placeholder="Mensagem..." type="text" onfocus="onfocus" id="saidaChat"> 
+  </div>
+  <div class="container">
     <div class="mensagens-enviadas"><ul id="entradaChat"></ul></div>
   </div>
 </body>

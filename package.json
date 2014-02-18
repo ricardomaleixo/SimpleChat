@@ -1,0 +1,13 @@
+{
+    "name": "SimpleChat",
+    "description": "An anonymous chat",
+    "url" : "https://github.com/ricardomaleixo/SimpleChat",
+    "main" : "app.js",
+    "version": "1.0.0",
+    "author": "ricardomaleixo",
+    "email:": "ricardoaleixoo@gmail.com",
+    "dependencies": {
+    	"socket.io":">= 0.9.16",
+    	"socket.io-stream":">= 0.5.2"
+    }
+}
