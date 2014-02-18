@@ -4,10 +4,11 @@
     "url" : "https://github.com/ricardomaleixo/SimpleChat",
     "main" : "app.js",
     "version": "1.0.0",
-    "author": "ricardomaleixo",
-    "email:": "ricardoaleixoo@gmail.com",
+    "author": "ricardomaleixo,fabiorogeriosj",
+    "email:": "ricardoaleixoo@gmail.com,fabio.rogerio.sj@gmail.com",
     "dependencies": {
-    	"socket.io":">= 0.9.16",
-    	"socket.io-stream":">= 0.5.2"
+    	"express":">= 3.4.7",
+        "socket.io":">= 0.9.16",
+        "socket.io-stream":">= 0.5.2"
     }
 }
